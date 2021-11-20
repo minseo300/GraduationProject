@@ -46,8 +46,8 @@ IMAGE_COLUMNS_NAME='ID, image, category'
 
 # connect with mysql
 # db=pymysql.connect(host="hostname ip주소", user="minseo",password="minseopw", db="db 이름")
-# 탄력적 IP 주소
-db=pymysql.connect(host="52.79.59.24", user="minseo",password="minseopw", db="SmartMirror",charset='utf8')
+# 탄력적 IP 주소 TODO:
+db=pymysql.connect(host="", user="",password="", db="",charset='utf8')
 curs=db.cursor()
 
 def classify_color(image_path):
@@ -77,7 +77,7 @@ def classify_color(image_path):
 
     return answer_color
 
-# s3 bucket - Todo: KEEP IT SECURE
+# s3 bucket - Todo: KEEP IT SECURE - 따로 제공, 깃허브에 푸쉬할 경우 반드시 공란으로 둘 것.
 BUCKET_NAME= ''
 ACCESS_KEY_ID=''
 ACCESS_SECRET_KEY=''
@@ -205,7 +205,7 @@ for style_name in folders: # style_name - casual, formal, ...
                             answer=user_input
 
                         # determine temperature section using outer category
-                        if answer==0 or answer==5 or answer==4 or answer==6 or answer==7 or answer==10:
+                        if answer==0 or answer==5 or answer==4 or answer==6 or answer==7 or answer==10: # TODO: outer category를 우선으로 하여 기온 구간 설정
                             outer_temperature=3
                         elif answer==1 or answer==11 :
                             outer_temperature=2
@@ -240,7 +240,7 @@ for style_name in folders: # style_name - casual, formal, ...
                             answer = user_input
 
                         #
-                        if answer == 1 or answer == 2:
+                        if answer == 1 or answer == 2: # TODO: 두번째로 top category로 기온 구간 설정
                             top_temperature = 1
                         elif answer==0 or answer==4 or answer==3:
                             top_temperature=2
@@ -334,7 +334,7 @@ for style_name in folders: # style_name - casual, formal, ...
                         else:
                             answer = user_input
 
-                        if answer == 0:
+                        if answer == 0: # TODO: 세번째로 bottom length로 기온 구간 설정
                             bottom_temperature = 1
                         elif answer == 1:
                             bottom_temperature = 2
@@ -364,7 +364,7 @@ for style_name in folders: # style_name - casual, formal, ...
                         else:
                             answer = user_input
 
-                        if answer==0:
+                        if answer==0: # TODO: 원피스의 경우에는 원피스의 소매기장으로 기온 구간 설정
                             onepiece_temperature=3
                         elif answer==1:
                             onepiece_temperature=1
