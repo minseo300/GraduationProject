@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">SmartMirror</string>
+    <string name="how_to_use">HOW TO USE</string>
+    <string name="smart_mirror">Smart Mirror</string>
+    <string name="user_info">USER INFO</string>
+    <string name="styling">STYLING</string>
+    <string name="closet">CLOSET</string>
+    <string name="except_in_kg">Except in kg</string>
+    <string name="except_in_cm">Except in cm</string>
+    <string name="female_male">female/male</string>
+    <string name="your_id">Write your name</string>
+    <string name="user_information">User Information</string>
+    <string name="name">Name</string>
+    <string name="weight">Weight</string>
+    <string name="degree_of_cold">Degree of cold</string>
+    <string name="save">Save</string>
+    <string name="resistant_to_cold">resistant to cold</string>
+    <string name="ordinary">ordinary</string>
+    <string name="weak_to_cold">weak to cold</string>
+    <string name="degree_of_heat">Degree of heat</string>
+    <string name="resistant_to_heat">resistant to heat</string>
+    <string name="weak_to_heat">weak to heat</string>
+    <string name="height">height</string>
+    <string name="gender">Gender</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

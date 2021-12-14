@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StylingActivity"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_dandy"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1.5dp"
+            android:scaleType="fitCenter"
+            android:text="dandy"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_formal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1.5dp"
+            android:scaleType="fitCenter"
+            android:text="formal"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_casual"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1.5dp"
+            android:scaleType="fitCenter"
+            android:text="casaul"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_street"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1.5dp"
+            android:includeFontPadding="false"
+            android:scaleType="fitCenter"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:text="Street" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_chic"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:scaleType="fitCenter"
+            android:text="chic"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_sport"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:scaleType="fitCenter"
+            android:text="sport"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_romantic"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:scaleType="fitCenter"
+            android:text="romantic"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+        <Button
+            app:backgroundTint = "@null"
+            android:id="@+id/btn_girlish"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:layout_marginRight="3dp"
+            android:scaleType="fitCenter"
+            android:text="girlish"
+            android:textSize="11dp"
+            android:textColor="#000000"
+            android:background="@drawable/btn_style2"
+            android:includeFontPadding="false"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/categoryList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:includeFontPadding="false" />
+
+
+</LinearLayout>

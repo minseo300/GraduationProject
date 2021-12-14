@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InfoActivity">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"
+        android:text="@string/user_information"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/info_textView"/>
+
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="@string/name"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/name_textView"
+        app:layout_constraintTop_toBottomOf="@+id/info_textView"/>
+
+    <EditText
+        android:layout_height="48dp"
+        android:layout_width="200dp"
+        android:textSize="14sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="90dp"
+        android:id="@+id/name_editText"
+        app:layout_constraintTop_toBottomOf="@+id/info_textView"
+        tools:ignore="SpeakableTextPresentCheck"
+        app:layout_constraintStart_toEndOf="@+id/name_textView"
+        android:importantForAutofill="no"
+        android:hint="@string/your_id"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="@string/gender"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/gender_textView"
+        app:layout_constraintTop_toBottomOf="@+id/name_textView"/>
+
+    <EditText
+        android:layout_height="48dp"
+        android:layout_width="200dp"
+        app:layout_constraintStart_toStartOf="@+id/name_editText"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/gender_editText"
+        app:layout_constraintTop_toBottomOf="@+id/name_editText"
+        android:importantForAutofill="no"
+        android:hint="@string/female_male"/>
+
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="@string/height"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/height_textView"
+        app:layout_constraintTop_toBottomOf="@+id/gender_textView"/>
+
+    <EditText
+        android:layout_height="48dp"
+        android:layout_width="200dp"
+        app:layout_constraintStart_toStartOf="@+id/gender_editText"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/height_editText"
+        app:layout_constraintTop_toBottomOf="@+id/gender_editText"
+        android:importantForAutofill="no"
+        android:hint="@string/except_in_cm"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="@string/weight"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/weight_textView"
+        app:layout_constraintTop_toBottomOf="@+id/height_textView"/>
+
+    <EditText
+        android:layout_height="48dp"
+        android:layout_width="200dp"
+        app:layout_constraintStart_toStartOf="@+id/height_editText"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/weight_editText"
+        app:layout_constraintTop_toBottomOf="@+id/height_editText"
+        android:importantForAutofill="no"
+        android:hint="@string/except_in_kg"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="@string/degree_of_heat"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/heat_textView"
+        app:layout_constraintTop_toBottomOf="@+id/weight_textView"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:text="@string/degree_of_cold"
+        android:layout_marginTop="145dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/cold_textView"
+        app:layout_constraintTop_toBottomOf="@+id/heat_textView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/chk_weakCold"
+        android:layout_marginEnd="12dp"/>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/weight_editText"
+        android:text="@string/weak_to_heat"
+        android:layout_marginTop="15dp"
+        android:id="@+id/chk_weakHeat"
+        app:layout_constraintTop_toBottomOf="@+id/weight_editText"
+        android:minHeight="48dp"/>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/chk_weakHeat"
+        android:text="@string/ordinary"
+        android:layout_marginTop="5dp"
+        android:id="@+id/chk_ordinaryHeat"
+        app:layout_constraintTop_toBottomOf="@+id/chk_weakHeat"
+        android:minHeight="48dp"/>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/chk_ordinaryHeat"
+        android:text="@string/resistant_to_heat"
+        android:layout_marginTop="5dp"
+        android:id="@+id/chk_resistantHeat"
+        app:layout_constraintTop_toBottomOf="@+id/chk_ordinaryHeat"
+        android:minHeight="48dp"/>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/chk_resistantHeat"
+        android:text="@string/weak_to_cold"
+        android:layout_marginTop="15dp"
+        android:id="@+id/chk_weakCold"
+        app:layout_constraintTop_toBottomOf="@+id/chk_resistantHeat"
+        tools:ignore="TouchTargetSizeCheck"
+        android:minHeight="48dp"/>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/chk_weakCold"
+        android:text="@string/ordinary"
+        android:layout_marginTop="5dp"
+        android:id="@+id/chk_ordinaryCold"
+        app:layout_constraintTop_toBottomOf="@+id/chk_weakCold"
+        android:minHeight="48dp"/>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/chk_ordinaryCold"
+        android:text="@string/resistant_to_cold"
+        android:layout_marginTop="5dp"
+        android:id="@+id/chk_resistantCold"
+        app:layout_constraintTop_toBottomOf="@+id/chk_ordinaryCold"
+        android:minHeight="48dp"/>
+
+    <Button
+        app:backgroundTint = "@null"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/save"
+        android:id="@+id/btn_saveInfo"
+        app:layout_constraintTop_toBottomOf="@+id/chk_resistantCold"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintVertical_bias="0.474"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/btn_style"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
