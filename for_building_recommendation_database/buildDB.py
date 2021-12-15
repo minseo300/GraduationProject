@@ -29,7 +29,7 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import pymysql
 import color
-
+from sklearn.cluster import KMeans
 
 # dictionary about classifying labels
 outer_cate_dict={0:'블레이저', 1:'트레이닝', 2:'무스탕',3:'트렌치코트',4:'코트',5:'트러커 자켓', 6:'라이더', 7: '블루종',8:'롱패딩', 9:'숏패딩',10:'가디건',11:'후드집업'}
@@ -41,49 +41,51 @@ bottom_fit_dict={0:'와이드팬츠', 1:'스키니진', 2:'일자바지', 3:'부
 print_dict={0: '무지',1:'스트라이프',2:'그래픽'}
 
 # mysql table columns names
-INFO_COLUMNS_NAME='ID, outer_cate, outer_color, outer_link, top_cate, top_sleevelength, top_color, top_print,top_link, bottom_cate, bottom_color, bottom_length, bottom_link, onepiece_sleevelength, onepiece_length, onepiece_color, onepiece_link, temperature_section'
+INFO_COLUMNS_NAME='ID, outer_cate, outer_color, outer_link, top_cate, top_sleevelength, top_color, top_print,top_link, bottom_cate, bottom_color, bottom_length, bottom_link, onepiece_sleevelength, onepiece_length, onepiece_color, onepiece_link, temperature_section, gender'
 IMAGE_COLUMNS_NAME='ID, image, category'
 
 # connect with mysql
 # db=pymysql.connect(host="hostname ip주소", user="minseo",password="minseopw", db="db 이름")
-# 탄력적 IP 주소 TODO:
-db=pymysql.connect(host="", user="",password="", db="",charset='utf8')
+# 탄력적 IP 주소: TODO
+db=pymysql.connect(host="52.79.59.24", user="minseo",password="minseopw", db="SmartMirror",charset='utf8')
 curs=db.cursor()
 
 def classify_color(image_path):
     image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    try:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = image.reshape((image.shape[0] * image.shape[1], 3))  # height, width 통합
 
-    image = image.reshape((image.shape[0] * image.shape[1], 3))  # height, width 통합
-
-    k = 3
-    clt = KMeans(n_clusters=k)
-    clt.fit(image)
-    hist = color.centroid_histogram(clt)
-    back = 0
-    for i in range(3):
-        print(i, hist[i], color.find_color(clt.cluster_centers_[i]))
-        if hist[i] < 0.1:
-            continue
-        if color.find_color(clt.cluster_centers_[i]) == "흰색":
-            if back == 1:
-                print("흰색")
+        k = 3
+        clt = KMeans(n_clusters=k)
+        clt.fit(image)
+        hist = color.centroid_histogram(clt)
+        back = 0
+        for i in range(3):
+            print(i, hist[i], color.find_color(clt.cluster_centers_[i]))
+            if hist[i] < 0.1:
+                continue
+            if color.find_color(clt.cluster_centers_[i]) == "흰색":
+                if back == 1:
+                    print("흰색")
+                    break
+                back = 1
+            else:
+                answer_color = color.find_color(clt.cluster_centers_[i])
+                print(answer_color)
                 break
-            back = 1
-        else:
-            answer_color=color.find_color(clt.cluster_centers_[i])
-            print(answer_color)
-            break
+    except:
+        answer_color='null'
 
     return answer_color
 
-# s3 bucket - Todo: KEEP IT SECURE - 따로 제공, 깃허브에 푸쉬할 경우 반드시 공란으로 둘 것.
-BUCKET_NAME= ''
-ACCESS_KEY_ID=''
-ACCESS_SECRET_KEY=''
+# s3 bucket - Todo: KEEP IT SECURE
+BUCKET_NAME= 'smartmirror-bucket'
+ACCESS_KEY_ID='AKIA462PQS3AXQ5D2BNE'
+ACCESS_SECRET_KEY='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'
 
 # root directory
-root_dir="E:/"
+root_dir="C:/Users/lmslm/Desktop/dd/"
 folders=os.listdir(root_dir)
 s3=boto3.client('s3')
 response=s3.list_buckets()
@@ -100,6 +102,7 @@ print_=load_model('print.h5')
 
 for style_name in folders: # style_name - casual, formal, ...
     # folder directory
+    print("Style: ",style_name)
     folder_dir=root_dir+style_name
     styles=os.listdir(folder_dir)
     for style in styles: # style - 1,2,3, ...
@@ -121,6 +124,7 @@ for style_name in folders: # style_name - casual, formal, ...
         onepiece_sleeve_length = 'null'
         onepiece_color = 'null'
         onepiece_link = 'null'
+        gender='null'
         outer_temperature=0
         top_temperature=0
         bottom_temperature=0
@@ -136,17 +140,20 @@ for style_name in folders: # style_name - casual, formal, ...
             if os.path.splitext(file)[1] == '.txt':
                 replaced_file_name = file.replace('.', '_')
                 category = replaced_file_name.split('_')
+                text_file=open(file_directory,'r')
                 # print(category)
                 # print("category length: ", len(category))
                 print("TEXT FILE: ",file)
                 if category[2]=='outer':
-                    outer_link=open(file_directory,'r')
+                    outer_link=text_file.readline()
+                    print('outer_link: ',outer_link)
                 elif category[2]=='top':
-                    top_link = open(file_directory, 'r')
+                    top_link = text_file.readline()
                 elif category[2]=='bottom':
-                    bottom_link = open(file_directory, 'r')
+                    bottom_link = text_file.readline()
                 elif category[2]=='onepiece':
-                    onepiece_link = open(file_directory, 'r')
+                    onepiece_link = text_file.readline()
+                text_file.close()
             else:
                 # Image
                 image = Image.open(file_directory).convert('RGB')
@@ -175,8 +182,11 @@ for style_name in folders: # style_name - casual, formal, ...
                     image_sql='insert into '+image_table_name+'('+IMAGE_COLUMNS_NAME+') values (%s,%s,%s)'
                     curs.execute(image_sql, values)
                     db.commit()
-
+                    # gender
+                    print('GENDER>>>')
+                    gender = input("Gender - F for female / M for male / U for unisex : ")
                 elif len(category)==4:
+
                     # Todo: s3에 업로드한 이미지 url 정보 가져오기
                     values = (ID, image_url ,category[2])
                     image_sql = 'insert into ' + image_table_name + '(' + IMAGE_COLUMNS_NAME + ') values (%s, %s, %s)'
@@ -205,12 +215,14 @@ for style_name in folders: # style_name - casual, formal, ...
                             answer=user_input
 
                         # determine temperature section using outer category
-                        if answer==0 or answer==5 or answer==4 or answer==6 or answer==7 or answer==10: # TODO: outer category를 우선으로 하여 기온 구간 설정
-                            outer_temperature=3
-                        elif answer==1 or answer==11 :
-                            outer_temperature=2
-                        elif answer==8 or answer==9:
+                        if answer==1 or answer==11 or answer==3:
                             outer_temperature=4
+                        elif answer==0 or answer==5 or answer==6 or answer==7 or answer==11 :
+                            outer_temperature=5
+                        elif answer==2 or answer==4 or answer==9:
+                            outer_temperature=6
+                        elif answer==8:
+                            outer_temperature=7
 
                         outer_cate = outer_cate_dict.get(answer)
 
@@ -240,10 +252,13 @@ for style_name in folders: # style_name - casual, formal, ...
                             answer = user_input
 
                         #
-                        if answer == 1 or answer == 2: # TODO: 두번째로 top category로 기온 구간 설정
+                        if answer == 1:
                             top_temperature = 1
-                        elif answer==0 or answer==4 or answer==3:
+                        elif answer==2:
                             top_temperature=2
+                        elif answer==0 or answer==4 or answer==3:
+                            top_temperature=3
+
                         top_cate=top_cate_dict.get(answer)
 
                         # classify top sleeve length
@@ -289,6 +304,26 @@ for style_name in folders: # style_name - casual, formal, ...
                     elif category[2]=='bottom':
                         print("<This is BOTTOM>")
 
+                        # classify bottom length
+                        print(
+                            ">>>>>BOTTOM length: 0-미니, 1-맥시")
+                        # plt.imshow(resized_image)
+                        resized_image = resized_image.reshape((1, 32, 32, 3))
+                        predict = np.argmax(bottom_length.predict(resized_image))
+                        print("PREDICTION: ", predict)
+                        user_input = int(input(
+                            ">>>>>>>>If prediction is right, enter -1. If prediction is wrong, enter right class."))
+                        if user_input == -1:
+                            answer = predict
+                        else:
+                            answer = user_input
+
+                        if answer == 0:
+                            bottom_temperature = 1
+                        elif answer == 1:
+                            bottom_temperature = 2
+                        bottom_length_cate = bottom_length_dict.get(answer)
+
                         # classify bottom categories
                         print(
                             ">>>>>BOTTOM categories: 0-스커트, 1-레깅스, 2-숏팬츠, 3-슬랙스, 4-조거팬츠")
@@ -304,7 +339,9 @@ for style_name in folders: # style_name - casual, formal, ...
                             answer = user_input
                         bottom_cate=bottom_cate_dict.get(answer)
 
-                        if answer!=0:
+                        if bottom_cate=='스커트' or bottom_cate=='숏팬츠':
+                            bottom_fit_cate='null'
+                        else:
                             # classify bottom fit
                             print(
                                 ">>>>>BOTTOM fit: 0-와이드팬츠, 1-스키니진, 2-일자바지, 3-부츠컷")
@@ -319,28 +356,7 @@ for style_name in folders: # style_name - casual, formal, ...
                                 answer = predict
                             else:
                                 answer = user_input
-                            bottom_fit_cate=bottom_fit_dict.get(answer)
-
-                        # classify bottom length
-                        print(
-                            ">>>>>BOTTOM length: 0-미니, 1-맥시")
-                        # plt.imshow(resized_image)
-                        resized_image = resized_image.reshape((1, 32, 32, 3))
-                        predict = np.argmax(bottom_length.predict(resized_image))
-                        print("PREDICTION: ", predict)
-                        user_input = int(input(">>>>>>>>If prediction is right, enter -1. If prediction is wrong, enter right class."))
-                        if user_input == -1:
-                            answer = predict
-                        else:
-                            answer = user_input
-
-                        if answer == 0: # TODO: 세번째로 bottom length로 기온 구간 설정
-                            bottom_temperature = 1
-                        elif answer == 1:
-                            bottom_temperature = 2
-
-                        bottom_length_cate=bottom_length_dict.get(answer)
-
+                            bottom_fit_cate = bottom_fit_dict.get(answer)
 
                         # Todo: classify color
                         print(">>>>>COLOR")
@@ -364,7 +380,7 @@ for style_name in folders: # style_name - casual, formal, ...
                         else:
                             answer = user_input
 
-                        if answer==0: # TODO: 원피스의 경우에는 원피스의 소매기장으로 기온 구간 설정
+                        if answer==0:
                             onepiece_temperature=3
                         elif answer==1:
                             onepiece_temperature=1
@@ -398,17 +414,22 @@ for style_name in folders: # style_name - casual, formal, ...
 
         info_table_name='R_'+style_name+'_info'
 
-        if outer_temperature!=0:
-            temperature=outer_temperature
+        if outer_temperature!=0: # 아우터가 있는 스타일링인 경우
+            if top_temperature==3:
+                temperature=outer_temperature
+            elif top_temperature==2:
+                temperature=outer_temperature-1
+            elif top_temperature==1:
+                temperature=outer_temperature-2
         else: # 아우터가 없는 스타일링일 경우
             if top_temperature!=0: # 상의가 있는 경우
                 temperature=top_temperature
             else: # 상의가 없는 경우 == 원피스인경우
                 temperature=onepiece_temperature
         print("[TEMPERATURE] -> ",temperature)
-        values=(ID,outer_cate,outer_color,outer_link,top_cate,top_sleeve_length,top_color,print_cate,top_link,bottom_cate,bottom_color,bottom_length_cate,bottom_link,onepiece_sleeve_length,onepiece_length,onepiece_color,onepiece_link,temperature)
+        values=(ID,outer_cate,outer_color,outer_link,top_cate,top_sleeve_length,top_color,print_cate,top_link,bottom_cate,bottom_color,bottom_length_cate,bottom_link,onepiece_sleeve_length,onepiece_length,onepiece_color,onepiece_link,temperature,gender)
 
-        info_sql='insert into '+info_table_name+'('+INFO_COLUMNS_NAME+') values (%s, %s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s )'
+        info_sql='insert into '+info_table_name+'('+INFO_COLUMNS_NAME+') values (%s, %s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s, %s)'
         curs.execute(info_sql,values)
         db.commit()
         print("==============================================================================================")
