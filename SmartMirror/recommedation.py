@@ -1,59 +1,19 @@
-import pickle
-
-import boto3
 import pandas as pd
-from botocore.client import Config
-import PIL
-from PIL import Image
-import os,re,glob
-import cv2
-import numpy as np
-import json
-#from tensorflow.python import keras
-#from keras.models import Sequential
-# from keras.layers import Dropout, Activation, Dense
-# from keras.layers import Flatten, Convolution2D, MaxPooling2D
-#import tensorflow as tf
-import matplotlib.pyplot as plt
-#from keras.models import load_model
-from sklearn.model_selection import train_test_split
-#from keras.preprocessing.image import ImageDataGenerator,array_to_img,img_to_array,load_img
-import os
-import glob
-import shutil as sh
-from sklearn.model_selection import train_test_split
-from PIL import Image
-import os,re,glob
-import cv2
-import numpy as np
-import json
-from keras.models import Sequential, save_model, load_model
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D
 import pymysql
-import color
-from sklearn.cluster import KMeans
 
-db=pymysql.connect(host="52.79.59.24", user="minseo",password="minseopw", db="SmartMirror",charset='utf8')
+db=pymysql.connect(host="54.180.67.155", user="minseo",password="minseopw", db="SmartMirror",charset='utf8')
 curs=db.cursor()
 
-
-
 topCate_bottomCate=pd.read_pickle("topCate_bottomCate.pkl")
-
 topColor_bottomColor=pd.read_pickle("topColor_bottomColor.pkl")
-
 topCate_bottomFit=pd.read_pickle("topCate_bottomFit.pkl")
-print(topCate_bottomFit)
 topCate_outerCate=pd.read_pickle("topCate_outerCate.pkl")
 topColor_outerColor=pd.read_pickle("topColor_outerColor.pkl")
 outerColor_bottomColor=pd.read_pickle("outerColor_bottomColor.pkl")
 outerCate_bottomCate=pd.read_pickle("outerCate_bottomCate.pkl")
 outerCate_bottomFit=pd.read_pickle("outerCate_bottomFit.pkl")
-
-# temperature_section_file=open('temperature_section.txt','r')
-# temperature_section=int(temperature_section_file.read())
-temperature_section=4
+temperature_section_file=open('temperature_section.txt','r')
+temperature_section=int(temperature_section_file.read())
 
 if temperature_section>=3 and temperature_section<=7:
     top_temperature_section=3
@@ -88,8 +48,6 @@ def top_bottom(top_temperature_section,bottom_temperature_section):
         score=topCate_bottomCate.loc[bottomCate][topCate]+topColor_bottomColor.loc[bottomColor][topColor]+topCate_bottomFit.loc[bottomFit][topCate]
         scores.append([combi,score])
 
-
-#############################################################################################################
 # for outer, top, bottom
 def outer_top_bottom(temperature_section,top_temperature_section,bottom_temperature_section):
     sql="SELECT  t.ID, b.ID, t.category,b.category, t.color, b.color, b.bottom_fit, o.ID,o.category,o.color FROM U_top_info as t JOIN U_bottom_info as b JOIN U_outer_info as o WHERE t.temperature_section="+str(top_temperature_section)+" AND b.temperature_section="+str(bottom_temperature_section)+" AND o.temperature_section="+str(temperature_section)+";"
@@ -114,12 +72,12 @@ def outer_top_bottom(temperature_section,top_temperature_section,bottom_temperat
         combi=[topID,bottomID,outerID]
         print("1.",topCate_bottomCate.loc[bottomCate][topCate])
         print("2.",topColor_bottomColor.loc[bottomColor][topColor])
-     #   print("3.",topCate_bottomFit.loc[bottomFit][topCate])
+        print("3.",topCate_bottomFit.loc[bottomFit][topCate])
         print("4.",topCate_outerCate.loc[outerCate][topCate])
         print("5.",topColor_outerColor.loc[outerColor][topColor])
         print("6.",outerColor_bottomColor.loc[bottomColor][outerColor])
         print("7.",outerCate_bottomCate.loc[bottomCate][outerCate])
-    #    print("8.",outerCate_bottomFit.loc[bottomFit][outerCate])
+        print("8.",outerCate_bottomFit.loc[bottomFit][outerCate])
 
         topCate_bottomCate_score=topCate_bottomCate.loc[bottomCate][topCate]
         topColor_bottomColor_score = topColor_bottomColor.loc[bottomColor][topColor]
@@ -142,11 +100,7 @@ def outer_top_bottom(temperature_section,top_temperature_section,bottom_temperat
         #       topCate_outerCate.loc[outerCate][topCate]+topColor_outerColor.loc[outerColor][topColor]+outerColor_bottomColor.loc[bottomColor][outerColor]+outerCate_bottomCate.loc[bottomCate][outerCate]+outerCate_bottomFit.loc[bottomFit][outerCate]
         scores.append([combi,score])
 
-
-# if temperature_section<4:
-#     top_bottom(top_temperature_section,bottom_temperature_section)
-# else:
-#     outer_top_bottom(temperature_section,top_temperature_section,bottom_temperature_section)
-
-
-
+if temperature_section<4:
+    top_bottom(top_temperature_section,bottom_temperature_section)
+else:
+    outer_top_bottom(temperature_section,top_temperature_section,bottom_temperature_section)

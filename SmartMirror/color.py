@@ -1,9 +1,5 @@
 import numpy as np
 import cv2
-from PIL import Image
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-import os
 from scipy.spatial import distance
 
 
@@ -368,69 +364,3 @@ def plot_colors(hist, centroids):
 
     # return the bar chart
     return bar
-
-
-
-
-
-# back = 0
-# for i in range(3):
-#     print(i, hist[i], find_color(clt.cluster_centers_[i]))
-#     if hist[i] < 0.1:
-#         continue
-#     if find_color(clt.cluster_centers_[i]) == "흰색":
-#         if back == 1:
-#             print("흰색")
-#             break
-#         back = 1
-#     else:
-#         print('final: ',find_color(clt.cluster_centers_[i]))
-#         break
-#
-#     # bar 출력부분
-#
-# bar = plot_colors(hist, clt.cluster_centers_)
-
-# #경로에 한글이 있으면 인식을 못하는 것 같아요
-# image_dir = "C:/Users/llod/Desktop/m/street"
-# image_list = os.listdir(image_dir)
-#
-#
-#
-#
-# for image_name in image_list:
-#     image_path = image_dir+'/'+ image_name
-#     print(image_path)
-#     image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
-#     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-#
-#     image = image.reshape((image.shape[0] * image.shape[1], 3)) # height, width 통합
-#
-#     k = 3
-#     clt = KMeans(n_clusters = k)
-#     clt.fit(image)
-#     hist = centroid_histogram(clt)
-#     back = 0
-#     for i in range(3):
-#         print(i, hist[i], find_color(clt.cluster_centers_[i]))
-#         if hist[i] <0.1:
-#             continue
-#         if find_color(clt.cluster_centers_[i]) == "흰색":
-#             if back == 1:
-#                 print("흰색")
-#                 break
-#             back = 1
-#         else :
-#             print(find_color(clt.cluster_centers_[i]))
-#             break
-#
-#
-#     #bar 출력부분
-#
-#     bar = plot_colors(hist, clt.cluster_centers_)
-
-    # # show our color bart
-    # plt.figure()
-    # plt.axis("off")
-    # plt.imshow(bar)
-    # plt.show()
