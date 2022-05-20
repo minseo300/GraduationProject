@@ -1,5 +1,5 @@
 # GraduationProject
 
-YouTube URL: https://youtu.be/plfgTPWKmik (New upload required)
+YouTube URL(New upload required): https://youtu.be/plfgTPWKmik 
 
 Styling Application Github: https://github.com/sojeongii/Styling_APP
